@@ -1,0 +1,5 @@
+Carpeta *obj* aparece automáticamente cuando se ejecuta en un paquete del proyecto 
+dotnet restore
+
+Carpeta *bin* aparece automáticamente cuando se ejecuta en un paquete del proyecto 
+dotnet run o dotnet build
