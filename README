@@ -3,3 +3,79 @@ dotnet restore
 
 Carpeta *bin* aparece automáticamente cuando se ejecuta en un paquete del proyecto 
 dotnet run o dotnet build
+
+
+# Proyecto .NET con Arquitectura Limpia y SQLite
+
+Este proyecto utiliza **Entity Framework Core** para la gestión de la base de datos SQLite mediante migraciones. Está organizado siguiendo el patrón de **Arquitectura Limpia**, separando las responsabilidades en proyectos distintos (API, Infrastructure, Domain, etc.).
+
+---
+
+## Estructura básica
+
+- **API:** Proyecto de inicio (startup), contiene configuración y servicios.
+- **Infrastructure:** Contiene el `DbContext`, migraciones y acceso a datos.
+- **Domain:** Entidades y lógica de negocio.
+- **Application:** Casos de uso, interfaces y DTOs.
+
+---
+
+## Tecnologías principales
+
+- .NET 7 (o versión que uses)
+- Entity Framework Core
+- SQLite
+- Herramientas EF Core para migraciones (`dotnet ef`)
+
+---
+
+## Configuración inicial (ya hecha actualmente)
+
+1. **Instalar herramientas EF Core en proyecto API (startup):**
+
+   bash
+   cd EventManagement.Api
+   dotnet add package Microsoft.EntityFrameworkCore.Tools
+
+2. **Instalar proveedor SQLite en proyecto Infrastructure:**
+
+    bash
+    cd EventManagement.Infrastructure
+    dotnet add package Microsoft.EntityFrameworkCore.Sqlite
+
+## Comandos para migraciones y base de datos
+Los comandos se ejecutan desde la carpeta del proyecto startup (API) o desde la raíz del proyecto solución, especificando el proyecto de migraciones (Infrastructure) y el proyecto startup (API).
+
+1. **Crear migración inicial**
+dotnet ef migrations add InitialCreate --project EventManagement.Infrastructure --startup-project
+
+
+2. **Aplicar migraciones y crear base de datos**
+dotnet ef database update --project EventManagement.Infrastructure --startup-project
+
+
+3. **Crear migración con cambios (nuevas tablas o columnas)**
+dotnet ef migrations add NombreDeLaMigracion --project EventManagement.Infrastructure --startup-project
+
+
+4. **Listar migraciones creadas**
+dotnet ef migrations list --project EventManagement.Infrastructure --startup-project .
+
+
+5. **Revertir a migración anterior si es necesario (rollback)** 
+dotnet ef database update NombreMigracionAnterior --project ../EventManagement.Infrastructure --startup-project .
+
+
+## Instalación y actualización del CLI dotnet ef
+Si no tienes el CLI de EF Core instalado globalmente, instala o actualiza con:
+dotnet tool install --global dotnet-ef
+# O para actualizar
+dotnet tool update --global dotnet-ef
+
+# Verifica versión instalada:
+dotnet ef --version
+
+# Verificación y exploración de la base de datos SQLite
+# Usa herramientas gráficas como DB Browser for SQLite para inspeccionar el archivo .db.
+
+## Nota: Siempre revisa que las cadenas de conexión apunten al archivo SQLite correcto.
