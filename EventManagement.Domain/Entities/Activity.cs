@@ -3,21 +3,22 @@ namespace EventManagement.Domain.Entities;
 public class Activity
 {
     public Guid id { get; private set; }
+    public string name { get; private set; }    
     public string type { get; private set; }
     public DateTime date { get; private set; }
     public float duration { get; private set; }
     public string description { get; private set; } 
 
-    private Passenger()
-    {
-        DocumentNumber = string.Empty;
-        FullName = string.Empty;
-    } 
+    public string location { get; private set; }
 
-    public Passenger(string documentNumber, string fullName)
+    public Activity(Guid id, string type, string name, DateTime date, float duration, string description, string location)
     {
-        Id = Guid.NewGuid();
-        DocumentNumber = documentNumber ?? throw new ArgumentNullException(nameof(documentNumber));
-        FullName = fullName ?? throw new ArgumentNullException(nameof(fullName));
+        this.id = id;
+        this.type = type;
+        this.name = name;
+        this.date = date;
+        this.duration = duration;
+        this.description = description;
+        this.location = location;
     }
 }

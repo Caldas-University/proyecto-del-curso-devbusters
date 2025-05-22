@@ -2,7 +2,7 @@ namespace EventManagement.Domain.Entities;
 
 public class Event
 {
-    public Guid id { get; private set; }
+    public Guid id { get; set; }
     public string name { get; private set; }
     public string description { get; private set; }
     public DateTime startDate { get; private set; }
@@ -10,20 +10,19 @@ public class Event
     public string location { get; private set; }
     public string type { get; private set; }
     public string status { get; private set; }
-    
-    // Falta definir actividades y algunos atributos más
+    public List<Activity> Activities { get; private set; } = new();
+    public List<Report> Reports { get; private set; } = new();
+    public List<User> Users { get; private set; } = new();
 
-    private Reservation()
+    public Event(string name, string description, DateTime startDate, DateTime endDate, string location, string type, string status)
     {
-        Passenger = null!;
-    }
-
-    public Reservation(Guid flightId, Guid seatId, Passenger passenger)
-    {
-        Id = Guid.NewGuid();
-        FlightId = flightId;
-        SeatId = seatId;
-        Passenger = passenger ?? throw new ArgumentNullException(nameof(passenger));
-        ReservedAt = DateTime.UtcNow;
+        id = Guid.NewGuid();
+        this.name = name ?? throw new ArgumentNullException(nameof(name));
+        this.description = description ?? throw new ArgumentNullException(nameof(description));
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.location = location ?? throw new ArgumentNullException(nameof(location));
+        this.type = type ?? throw new ArgumentNullException(nameof(type));
+        this.status = status ?? throw new ArgumentNullException(nameof(status));
     }
 }

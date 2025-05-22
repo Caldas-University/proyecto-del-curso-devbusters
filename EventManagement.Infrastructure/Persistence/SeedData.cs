@@ -1,33 +1,28 @@
-namespace FlightReservation.Infrastructure.Persistence;
+namespace EventManagement.Infrastructure.Persistence;
 
-using FlightReservation.Domain.Entities;
+using EventManagement.Domain.Entities;
 
 public static class SeedData
 {
-    public static void Initialize(FlightReservationDbContext context)
+    public static void Initialize(EventManagementDbContext context)
     {
-        if (context.Flights.Any())
+        if (context.Events.Any())
         {
-            
+
             return;
         }
 
-        // Crear vuelo
-        var flight = new Flight(
-            origin: "Bogota",
-            destination: "Medellin",
-            departureDate: DateTime.UtcNow.AddDays(1)
-        );
+        //crear evento 
+        var event1 = new Event(
+            "Event 1",
+            "Somos las mejores",
+             DateTime.Now,
+             DateTime.Now.AddDays(1),
+             "Casa",
+             "Dormir",
+             "Activo");
 
-        // Crear asientos
-        for (int i = 1; i <= 10; i++)
-        {
-            var seatNumber = $"A{i:D2}"; // A01, A02, etc.
-            var preference = (i % 2 == 0) ? "Window" : "Aisle"; // Alternar preferencias
-            flight.Seats.Add(new Seat(seatNumber, preference));
-        }
-
-        context.Flights.Add(flight);
+        context.Events.Add(event1);
         context.SaveChanges();
     }
 }

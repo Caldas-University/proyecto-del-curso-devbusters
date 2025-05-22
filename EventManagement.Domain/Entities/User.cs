@@ -1,14 +1,5 @@
 namespace EventManagement.Domain.Entities;
 
-public enum Role {
-    ORGANIZER,
-    PARTICIPANT,
-    SPONSOR,
-    ADMINISTRATOR,
-    SUPPLIER,
-    SPEAKER
-}
-
 public class User
 {
     public Guid id { get; private set; }
@@ -16,5 +7,13 @@ public class User
     public string email { get; private set; }
     public string password { get; private set; }
     public string phoneNumber { get; private set; }
-    public Role role { get; private set; }
+
+    public User(Guid id, string name, string email, string password, string phoneNumber)
+    {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.phoneNumber = phoneNumber;
+    }
 }

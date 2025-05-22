@@ -1,18 +1,19 @@
-using FlightReservation.Application.Services;
-using FlightReservation.Infrastructure.Persistence;
-using FlightReservation.Infrastructure.Repositories;
+using EventManagement.Application.Services;
+using EventManagement.Infrastructure.Persistence;
+using EventManagement.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
-using FlightReservation.Domain.Repositories;
-using FlightReservation.Application.Contracts.Services;
+using EventManagement.Domain.Repositories;
+using EventManagement.Application.Contracts.Services;
+using AutoMapper;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<FlightReservationDbContext>(options =>
-    options.UseSqlite("Data Source=flightreservation.db"));
+builder.Services.AddDbContext<EventManagementDbContext>(options =>
+    options.UseSqlite("Data Source=EventManagement.db"));
 
-builder.Services.AddScoped<IFlightRepository, FlightRepository>();
-builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
-builder.Services.AddScoped<IReservationServiceApp, ReservationServiceApp>();
+builder.Services.AddScoped<IEventRepository, EventRepository>();
+builder.Services.AddScoped<IEventServiceApp, EventServiceApp>();
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -22,11 +23,10 @@ var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
 {
-    var dbContext = scope.ServiceProvider.GetRequiredService<FlightReservationDbContext>();
+    var dbContext = scope.ServiceProvider.GetRequiredService<EventManagementDbContext>();
     SeedData.Initialize(dbContext);
 }
-
-
+app.UseHttpsRedirection();
 app.UseSwagger();
 app.UseSwaggerUI();
 app.MapControllers();
