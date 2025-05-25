@@ -79,3 +79,58 @@ dotnet ef --version
 # Usa herramientas gráficas como DB Browser for SQLite para inspeccionar el archivo .db.
 
 ## Nota: Siempre revisa que las cadenas de conexión apunten al archivo SQLite correcto.
+
+Progreso por funcionalidades =
+
+🔹 📌 Implementación - CU-GE-05: Generar reportes detallados
+Esta funcionalidad corresponde a los ítems ID-01, ID-02 e ID-03 del módulo de gestión de eventos.
+
+✅ ID-01: Captura de datos
+Se creó la entidad EventReport y su correspondiente DTO.
+
+Se implementó el endpoint POST /api/EventReport para capturar:
+
+Asistencia registrada
+
+Tasa de ocupación
+
+Uso de recursos
+
+Cumplimiento del cronograma
+
+Datos persistidos en SQLite (EventManagement.db).
+
+✅ ID-02: Aplicación de filtros
+Se implementó el endpoint GET /api/EventReport con filtros por:
+
+eventId
+
+activityType
+
+Rango de fechas (startDate, endDate)
+
+Retorna registros en formato JSON para análisis o revisión.
+
+✅ ID-03: Generar reporte detallado
+Se creó el endpoint GET /api/EventReport/summary para cálculo de métricas:
+
+Total de registros
+
+Promedio de asistencia
+
+Promedio de ocupación
+
+Promedio de cumplimiento del cronograma
+
+Se implementó exportación a PDF en el endpoint GET /api/EventReport/export/pdf
+
+Incluye resumen de métricas + tabla de registros
+
+Estilo visual limpio, alineado y con separadores
+
+🧪 Pruebas
+Todas las funcionalidades fueron probadas desde Swagger:
+
+Inserción y consulta de datos exitosa
+
+Descarga del PDF verificada
