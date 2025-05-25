@@ -1,81 +1,122 @@
-Carpeta *obj* aparece automáticamente cuando se ejecuta en un paquete del proyecto 
-dotnet restore
+## 📖 Descripción
 
-Carpeta *bin* aparece automáticamente cuando se ejecuta en un paquete del proyecto 
-dotnet run o dotnet build
+Este proyecto demuestra cómo organizar un sistema .NET siguiendo los principios de la Arquitectura Limpia:
 
+* **Separación de responsabilidades** entre capas (API, Infraestructura, Dominio, Aplicación).
+* **Dependencias unidireccionales**: las capas superiores no conocen las inferiores.
+* **Pruebas unitarias** sencillas en la lógica de negocio.
+* **Persistencia** a través de EF Core sobre una base de datos SQLite local.
 
-# Proyecto .NET con Arquitectura Limpia y SQLite
+## ⚙️ Características
 
-Este proyecto utiliza **Entity Framework Core** para la gestión de la base de datos SQLite mediante migraciones. Está organizado siguiendo el patrón de **Arquitectura Limpia**, separando las responsabilidades en proyectos distintos (API, Infrastructure, Domain, etc.).
+* API RESTful con controladores limpios y servicios desacoplados.
+* Uso de **DTOs** y **patrón Mediator** para coordinar operaciones.
+* Gestión de migraciones y semillas de datos.
+* Integración con **SQLite** para entornos de desarrollo y pruebas.
 
----
+## 🏗️ Arquitectura
 
-## Estructura básica
+```text
+┌───────────┐      ┌─────────────┐      ┌──────────────┐
+│   API     │────▶│ Application │────▶│   Domain     │
+│ (Web/API) │      │  (Use cases)│      │ (Entidades)  │
+└───────────┘      └─────────────┘      └──────────────┘
+                         │
+                         ▼
+                   ┌─────────────┐
+                   │ Infrastructure │
+                   │ (EF Core, DB) │
+                   └─────────────┘
+```
 
-- **API:** Proyecto de inicio (startup), contiene configuración y servicios.
-- **Infrastructure:** Contiene el `DbContext`, migraciones y acceso a datos.
-- **Domain:** Entidades y lógica de negocio.
-- **Application:** Casos de uso, interfaces y DTOs.
+Cada proyecto tiene responsabilidad única y se publica como paquete independiente (opcional).
 
----
+## 📁 Estructura de carpetas
 
-## Tecnologías principales
+```text
+/ src
+│
+├── Api                # Proyecto WebAPI (entrada de la aplicación)
+├── Application        # Lógica de casos de uso y servicios
+├── Domain             # Entidades, interfaces y reglas de negocio
+└── Infrastructure     # Implementación de repositorios y EF Core
 
-- .NET 7 (o versión que uses)
-- Entity Framework Core
-- SQLite
-- Herramientas EF Core para migraciones (`dotnet ef`)
+/tests                  # Pruebas unitarias
+```
 
----
+## 🛠️ Requisitos previos
 
-## Configuración inicial (ya hecha actualmente)
+* [.NET 7 SDK](https://dotnet.microsoft.com/download)
+* SQLite (opcional para explorar la base de datos)
+* [dotnet-ef CLI](https://docs.microsoft.com/ef/core/cli/dotnet)
 
-1. **Instalar herramientas EF Core en proyecto API (startup):**
+## 🚀 Instalación
 
-   bash
-   cd EventManagement.Api
-   dotnet add package Microsoft.EntityFrameworkCore.Tools
+1. Clona el repositorio:
 
-2. **Instalar proveedor SQLite en proyecto Infrastructure:**
+   ```bash
+   git clone https://github.com/tu-usuario/tu-repo.git
+   cd tu-repo
+   ```
 
-    bash
-    cd EventManagement.Infrastructure
-    dotnet add package Microsoft.EntityFrameworkCore.Sqlite
+2. Restaura dependencias y construye:
 
-## Comandos para migraciones y base de datos
-Los comandos se ejecutan desde la carpeta del proyecto startup (API) o desde la raíz del proyecto solución, especificando el proyecto de migraciones (Infrastructure) y el proyecto startup (API).
+   ```bash
+   dotnet restore
+   dotnet build --configuration Release
+   ```
 
-1. **Crear migración inicial**
-dotnet ef migrations add InitialCreate --project EventManagement.Infrastructure --startup-project
+3. Instala o actualiza la herramienta de migraciones (`dotnet-ef`):
 
+   ```bash
+   # Si no la tienes instalada
+   dotnet tool install --global dotnet-ef
 
-2. **Aplicar migraciones y crear base de datos**
-dotnet ef database update --project EventManagement.Infrastructure --startup-project
+   # O para actualizar
+   dotnet tool update  --global dotnet-ef
 
+   # Verifica versión
+   dotnet ef --version
+   ```
 
-3. **Crear migración con cambios (nuevas tablas o columnas)**
-dotnet ef migrations add NombreDeLaMigracion --project EventManagement.Infrastructure --startup-project
+## ▶️ Uso
 
+1. Ejecuta la API:
 
-4. **Listar migraciones creadas**
-dotnet ef migrations list --project EventManagement.Infrastructure --startup-project .
+   ```bash
+   cd src/Api
+   dotnet run
+   ```
 
+2. La API quedará disponible en `https://localhost:5001` o `http://localhost:5000`.
 
-5. **Revertir a migración anterior si es necesario (rollback)** 
-dotnet ef database update NombreMigracionAnterior --project ../EventManagement.Infrastructure --startup-project .
+3. Importa la colección de Postman o prueba con `curl`:
 
+   ```bash
+   curl -X GET https://localhost:5001/api/valores
+   ```
 
-## Instalación y actualización del CLI dotnet ef
-Si no tienes el CLI de EF Core instalado globalmente, instala o actualiza con:
-dotnet tool install --global dotnet-ef
-# O para actualizar
-dotnet tool update --global dotnet-ef
+## 🗄️ Mantenimiento de la base de datos
 
-# Verifica versión instalada:
-dotnet ef --version
+* **Crear migración**:
 
-# Verificación y exploración de la base de datos SQLite
-# Usa herramientas gráficas como DB Browser for SQLite para inspeccionar el archivo .db.
+  ```bash
+  dotnet ef migrations add NombreMigracion --project src/Infrastructure --startup-project src/Api
+  ```
 
-## Nota: Siempre revisa que las cadenas de conexión apunten al archivo SQLite correcto.
+* **Actualizar base de datos**:
+
+  ```bash
+  dotnet ef database update --project src/Infrastructure --startup-project src/Api
+  ```
+
+* **Explorar SQLite**:
+  Utiliza [DB Browser for SQLite](https://sqlitebrowser.org/) para abrir el archivo `Data/Data.db`.
+
+## 🤝 Contribuciones
+
+1. Haz un *fork* del proyecto.
+2. Crea una rama de características: `git checkout -b feature/mi-feature`
+3. Realiza tus cambios y haz *commit*: `git commit -m "feat: descripción de cambio"`
+4. Empuja tu rama: `git push origin feature/mi-feature`
+5. Abre un *pull request* describiendo tus cambios.
