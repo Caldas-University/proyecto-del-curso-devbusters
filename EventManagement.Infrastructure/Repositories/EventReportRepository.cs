@@ -1,6 +1,6 @@
 using EventManagement.Application.Contracts.Services;
-using EventManagement.Application.DTO;
 using EventManagement.Domain.Entities;
+using EventManagement.Application.DTO;
 using Microsoft.EntityFrameworkCore;
 using EventManagement.Infrastructure.Persistence;
 
@@ -10,32 +10,19 @@ public class EventReportRepository : IEventReportService
 {
     private readonly EventManagementDbContext _context;
 
-
     public EventReportRepository(EventManagementDbContext context)
     {
         _context = context;
     }
 
-    public async Task AddReportAsync(EventReportDto dto)
+    public async Task AddReportAsync(EventReport entity)
     {
-        var entity = new EventReport
-        {
-            Id = Guid.NewGuid(),
-            EventId = dto.EventId,
-            ActivityType = dto.ActivityType,
-            RegisteredCount = dto.RegisteredCount,
-            AttendanceCount = dto.AttendanceCount,
-            OccupancyRate = dto.OccupancyRate,
-            ResourceUsage = dto.ResourceUsage,
-            ScheduleCompliance = dto.ScheduleCompliance,
-            Timestamp = dto.Timestamp
-        };
-
+        entity.Id = Guid.NewGuid();
         _context.EventReports.Add(entity);
         await _context.SaveChangesAsync();
     }
 
-    public async Task<IEnumerable<EventReportDto>> GetReportsAsync(string? eventId, string? activityType, DateTime? startDate, DateTime? endDate)
+    public async Task<IEnumerable<EventReport>> GetReportsAsync(string? eventId, string? activityType, DateTime? startDate, DateTime? endDate)
     {
         var query = _context.EventReports.AsQueryable();
 
@@ -51,24 +38,10 @@ public class EventReportRepository : IEventReportService
         if (endDate.HasValue)
             query = query.Where(r => r.Timestamp <= endDate.Value);
 
-        return await query.Select(r => new EventReportDto
-        {
-            EventId = r.EventId,
-            ActivityType = r.ActivityType,
-            RegisteredCount = r.RegisteredCount,
-            AttendanceCount = r.AttendanceCount,
-            OccupancyRate = r.OccupancyRate,
-            ResourceUsage = r.ResourceUsage,
-            ScheduleCompliance = r.ScheduleCompliance,
-            Timestamp = r.Timestamp
-        }).ToListAsync();
+        return await query.ToListAsync();
     }
 
-    public async Task<ReportSummaryDto> GetReportSummaryAsync(
-    string? eventId,
-    string? activityType,
-    DateTime? startDate,
-    DateTime? endDate)
+    public async Task<ReportSummaryDto> GetReportSummaryAsync(string? eventId, string? activityType, DateTime? startDate, DateTime? endDate)
     {
         var query = _context.EventReports.AsQueryable();
 
@@ -105,5 +78,4 @@ public class EventReportRepository : IEventReportService
             AverageScheduleCompliance = await query.AverageAsync(r => r.ScheduleCompliance)
         };
     }
-
 }
