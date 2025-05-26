@@ -12,4 +12,14 @@ public class RolePermission
         this.idRole = idRole;
         this.idPermission = idPermission;
     }
+
+    public void ChangePermission (Guid newPermissionId)
+    {
+        if (newPermissionId == Guid.Empty)
+        {
+            throw new ArgumentException("Permission ID cannot be empty.", nameof(newPermissionId));
+        }
+
+        idPermission = newPermissionId;
+    }
 }
