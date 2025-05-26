@@ -11,4 +11,7 @@ public class EventManagementDbContext : DbContext
         : base(options)
     {
     }
+
+    public DbSet<EventReport> EventReports { get; set; }
+
 }

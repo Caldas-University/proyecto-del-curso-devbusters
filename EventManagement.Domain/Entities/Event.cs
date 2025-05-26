@@ -11,7 +11,7 @@ public class Event
     public string type { get; private set; }
     public string status { get; private set; }
     public List<Activity> Activities { get; private set; } = new();
-    public List<Report> Reports { get; private set; } = new();
+    public List<EventReport> Reports { get; private set; } = new();
     public List<User> Users { get; private set; } = new();
 
     public Event(string name, string description, DateTime startDate, DateTime endDate, string location, string type, string status)
