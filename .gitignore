@@ -2,3 +2,11 @@
 */obj
 *.db-shm
 *.db-wal
+# Archivos de compilación
+bin/
+obj/
+
+# Base de datos
+*.db
+*.db-shm
+*.db-wal
