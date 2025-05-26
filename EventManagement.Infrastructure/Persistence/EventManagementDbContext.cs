@@ -7,6 +7,8 @@ public class EventManagementDbContext : DbContext
 {
     public DbSet<Event> Events => Set<Event>();
 
+    public DbSet<Resource> Resources => Set<Resource>();
+
     public EventManagementDbContext(DbContextOptions<EventManagementDbContext> options)
         : base(options)
     {
