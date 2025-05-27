@@ -31,21 +31,5 @@ public class RoleRepository : IRoleRepository
     {
         return await _context.Roles.ToListAsync();
     }
-
-    public async Task UpdateRoleAsync(Role role)
-    {
-        _context.Roles.Update(role);
-        await _context.SaveChangesAsync();
-    }
-
-    public async Task DeleteRoleAsync(Guid id)
-    {
-        var role = await GetRoleByIdAsync(id);
-        if (role != null)
-        {
-            _context.Roles.Remove(role);
-            await _context.SaveChangesAsync();
-        }
-    }
 }
 

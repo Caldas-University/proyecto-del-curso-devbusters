@@ -7,6 +7,6 @@ namespace EventManagement.Domain.Entities;
         public Role(Guid id, string name)
         {
             this.id = id;
-            this.name = name;
+            this.name = name?.ToUpperInvariant();
         }
     }
