@@ -22,12 +22,12 @@ public class EventReportRepository : IEventReportService
         await _context.SaveChangesAsync();
     }
 
-    public async Task<IEnumerable<EventReport>> GetReportsAsync(string? eventId, string? activityType, DateTime? startDate, DateTime? endDate)
+    public async Task<IEnumerable<EventReport>> GetReportsAsync(Guid? Id, string? activityType, DateTime? startDate, DateTime? endDate)
     {
         var query = _context.EventReports.AsQueryable();
 
-        if (!string.IsNullOrEmpty(eventId))
-            query = query.Where(r => r.EventId == eventId);
+        if (Id.HasValue)
+            query = query.Where(r => r.Id == Id.Value);
 
         if (!string.IsNullOrEmpty(activityType))
             query = query.Where(r => r.ActivityType == activityType);
@@ -41,12 +41,12 @@ public class EventReportRepository : IEventReportService
         return await query.ToListAsync();
     }
 
-    public async Task<ReportSummaryDto> GetReportSummaryAsync(string? eventId, string? activityType, DateTime? startDate, DateTime? endDate)
+    public async Task<ReportSummaryDto> GetReportSummaryAsync(Guid? Id, string? activityType, DateTime? startDate, DateTime? endDate)
     {
         var query = _context.EventReports.AsQueryable();
 
-        if (!string.IsNullOrEmpty(eventId))
-            query = query.Where(r => r.EventId == eventId);
+        if (Id.HasValue)
+            query = query.Where(r => r.Id == Id.Value);
 
         if (!string.IsNullOrEmpty(activityType))
             query = query.Where(r => r.ActivityType == activityType);
