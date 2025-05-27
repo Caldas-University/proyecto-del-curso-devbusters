@@ -1,9 +1,9 @@
-namespace EventManagement.Domain.Repositories;
-
 using EventManagement.Domain.Entities;
 
-public interface IResourceRepository
+namespace EventManagement.Domain.Repositories;
+
+public interface IResourceAssignmentRepository
 {
-    Task <Guid> AddResourceAsync(Resource resourceEntity);
-    Task<Resource> GetResourceByIdAsync(Guid id);
+    Task<Guid> AddResourceAssignmentAsync(ResourceAssignment assignment);
+    Task<ResourceAssignment> GetResourceAssignmentByIdAsync(Guid id);
 }

@@ -9,6 +9,9 @@ public class EventManagementDbContext : DbContext
 
     public DbSet<Resource> Resources => Set<Resource>();
 
+    public DbSet<ResourceAssignment> ResourceAssignments => Set<ResourceAssignment>();
+
+
     public EventManagementDbContext(DbContextOptions<EventManagementDbContext> options)
         : base(options)
     {
