@@ -15,6 +15,7 @@ public class RoleUserHistory
         this.userId = userId;
         this.userRoleId = userRoleId;
         this.dateChange = dateChange;
-        this.changeDescription = changeDescription;
+        this.changeDescription = changeDescription.ToUpperInvariant() 
+            ?? throw new ArgumentNullException(nameof(changeDescription), "Change description cannot be null");
     }
 }
