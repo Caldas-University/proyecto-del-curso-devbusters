@@ -84,7 +84,7 @@ Cada proyecto tiene responsabilidad única y se publica como paquete independien
 1. Ejecuta la API:
 
    ```bash
-   cd src/Api
+   cd EventManagement.Api
    dotnet run
    ```
 
@@ -101,17 +101,17 @@ Cada proyecto tiene responsabilidad única y se publica como paquete independien
 * **Crear migración**:
 
   ```bash
-  dotnet ef migrations add NombreMigracion --project src/Infrastructure --startup-project src/Api
+  dotnet ef migrations add <NombreMigracion> --project EventManagement.Infrastructure --startup-project EventManagement.Api
   ```
 
 * **Actualizar base de datos**:
 
   ```bash
-  dotnet ef database update --project src/Infrastructure --startup-project src/Api
+  dotnet ef database update --project EventManagement.Infrastructure --startup-project EventManagement.Api
   ```
 
 * **Explorar SQLite**:
-  Utiliza [DB Browser for SQLite](https://sqlitebrowser.org/) para abrir el archivo `Data/Data.db`.
+  Utiliza [DB Browser for SQLite](https://sqlitebrowser.org/) para abrir el archivo `EventManagement.Api/EventManagement.db`.
 
 ## 🤝 Contribuciones
 
