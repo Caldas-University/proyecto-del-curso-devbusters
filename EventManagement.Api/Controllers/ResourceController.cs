@@ -21,7 +21,7 @@ public class ResourceController : ControllerBase
 
     // POST api/resource 
     [HttpPost]
-    public IActionResult AddResource(CreateRequestEventDTO resourceDTO)
+    public IActionResult AddResource(CreateRequestResourceDTO resourceDTO)
     {
         
         if (resourceDTO == null)
