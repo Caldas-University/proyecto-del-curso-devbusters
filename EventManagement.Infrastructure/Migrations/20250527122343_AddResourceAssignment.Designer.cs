@@ -3,6 +3,7 @@ using System;
 using EventManagement.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EventManagement.Infrastructure.Migrations
 {
     [DbContext(typeof(EventManagementDbContext))]
-    partial class EventManagementDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250527122343_AddResourceAssignment")]
+    partial class AddResourceAssignment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.16");
@@ -90,41 +93,6 @@ namespace EventManagement.Infrastructure.Migrations
                     b.HasKey("id");
 
                     b.ToTable("Events");
-                });
-
-            modelBuilder.Entity("EventManagement.Domain.Entities.EventReport", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ActivityType")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("AttendanceCount")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("EventId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<double>("OccupancyRate")
-                        .HasColumnType("REAL");
-
-                    b.Property<int>("RegisteredCount")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("ResourceUsage")
-                        .HasColumnType("TEXT");
-
-                    b.Property<double>("ScheduleCompliance")
-                        .HasColumnType("REAL");
-
-                    b.Property<DateTime>("Timestamp")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("EventReports");
                 });
 
             modelBuilder.Entity("EventManagement.Domain.Entities.Report", b =>

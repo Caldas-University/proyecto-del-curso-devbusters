@@ -13,7 +13,12 @@ builder.Services.AddDbContext<EventManagementDbContext>(options =>
 
 builder.Services.AddScoped<IEventRepository, EventRepository>();
 builder.Services.AddScoped<IEventServiceApp, EventServiceApp>();
-builder.Services.AddScoped<IEventReportService, EventReportRepository>();
+builder.Services.AddScoped<IResourceRepository, ResourceRepository>();
+builder.Services.AddScoped<IResourceServiceApp, ResourceServiceApp>();
+builder.Services.AddScoped<IResourceAssignmentRepository, ResourceAssignmentRepository>();
+builder.Services.AddScoped<IResourceAssignmentServiceApp, ResourceAssignmentServiceApp>();
+
+
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
 builder.Services.AddControllers();
