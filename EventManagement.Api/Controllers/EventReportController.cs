@@ -28,40 +28,56 @@ public class EventReportController : ControllerBase
 
     [HttpGet]
     public async Task<IActionResult> Get(
-        [FromQuery] string? eventId,
+        [FromQuery] Guid? Id,
         [FromQuery] string? activityType,
         [FromQuery] DateTime? startDate,
         [FromQuery] DateTime? endDate)
     {
-        var entities = await _service.GetReportsAsync(eventId, activityType, startDate, endDate);
+        var entities = await _service.GetReportsAsync(Id, activityType, startDate, endDate);
         var dtos = _mapper.Map<IEnumerable<EventReportDto>>(entities);
         return Ok(dtos);
     }
 
     [HttpGet("summary")]
     public async Task<IActionResult> GetSummary(
-        [FromQuery] string? eventId,
+        [FromQuery] Guid? Id,
         [FromQuery] string? activityType,
         [FromQuery] DateTime? startDate,
         [FromQuery] DateTime? endDate)
     {
-        var summary = await _service.GetReportSummaryAsync(eventId, activityType, startDate, endDate);
+        var summary = await _service.GetReportSummaryAsync(Id, activityType, startDate, endDate);
         return Ok(summary);
     }
 
     [HttpGet("export/pdf")]
     public async Task<IActionResult> ExportPdf(
-        [FromQuery] string? eventId,
+        [FromQuery] Guid? Id,
         [FromQuery] string? activityType,
         [FromQuery] DateTime? startDate,
         [FromQuery] DateTime? endDate)
     {
-        var entities = await _service.GetReportsAsync(eventId, activityType, startDate, endDate);
+        var entities = await _service.GetReportsAsync(Id, activityType, startDate, endDate);
         var dtos = _mapper.Map<List<EventReportDto>>(entities);
 
-        var summary = await _service.GetReportSummaryAsync(eventId, activityType, startDate, endDate);
-        var pdfBytes = EventManagement.Api.Reports.EventReportPdfGenerator.Generate(dtos, summary);
+        var summary = await _service.GetReportSummaryAsync(Id, activityType, startDate, endDate);
+        var pdfBytes = Reports.EventReportPdfGenerator.Generate(dtos, summary);
 
         return File(pdfBytes, "application/pdf", "event-report.pdf");
+    }
+
+    [HttpGet("export/excel")]
+    public async Task<IActionResult> ExportExcel(
+    [FromQuery] Guid? id,
+    [FromQuery] string? activityType,
+    [FromQuery] DateTime? startDate,
+    [FromQuery] DateTime? endDate)
+    {
+        var entities = await _service.GetReportsAsync(id, activityType, startDate, endDate);
+        var dtos = _mapper.Map<List<EventReportDto>>(entities);
+
+        var summary = await _service.GetReportSummaryAsync(id, activityType, startDate, endDate);
+        var excelBytes = Reports.EventReportExcelGenerator.Generate(dtos, summary);
+
+        return File(excelBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "event-report.xlsx");
     }
 }
