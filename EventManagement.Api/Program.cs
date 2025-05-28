@@ -7,7 +7,7 @@ using EventManagement.Application.Contracts.Services;
 using AutoMapper;
 
 var builder = WebApplication.CreateBuilder(args);
-
+QuestPDF.Settings.License = QuestPDF.Infrastructure.LicenseType.Community;
 builder.Services.AddDbContext<EventManagementDbContext>(options =>
     options.UseSqlite("Data Source=EventManagement.db"));
 
