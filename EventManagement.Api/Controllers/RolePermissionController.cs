@@ -9,14 +9,14 @@ using AutoMapper;
 
 [ApiController]
 [Route("api/[controller]")]
-public class RolePermissionServiceApp : ControllerBase
+public class RolePermissionController : ControllerBase
 {
     private readonly IRolePermissionServiceApp _rolePermissionService;
     private readonly IRoleServiceApp _roleService;
     private readonly IPermissionServiceApp _permissionService;
     private readonly IMapper _mapper;
 
-    public RolePermissionServiceApp(IRolePermissionServiceApp rolePermissionService, IMapper mapper, IRoleServiceApp roleService, IPermissionServiceApp permissionService)
+    public RolePermissionController(IRolePermissionServiceApp rolePermissionService, IMapper mapper, IRoleServiceApp roleService, IPermissionServiceApp permissionService)
     {
         _rolePermissionService = rolePermissionService;
         _roleService = roleService;
