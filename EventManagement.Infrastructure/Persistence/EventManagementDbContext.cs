@@ -18,5 +18,5 @@ public class EventManagementDbContext : DbContext
     {
     }
 
-    
+
 }
