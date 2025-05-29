@@ -5,3 +5,6 @@
 *.db-shm
 *.db-wal
 /estructura.txt
+.fake
+
+.vs

@@ -21,6 +21,22 @@ builder.Services.AddScoped<IResourceAssignmentRepository, ResourceAssignmentRepo
 builder.Services.AddScoped<IResourceAssignmentServiceApp, ResourceAssignmentServiceApp>();
 
 
+
+builder.Services.AddScoped<IPermissionRepository, PermissionRepository>();
+builder.Services.AddScoped<IPermissionServiceApp, PermissionServiceApp>();
+
+builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+builder.Services.AddScoped<IRoleServiceApp, RoleServiceApp>();
+
+builder.Services.AddScoped<IRolePermissionRepository, RolePermissionRepository>();
+builder.Services.AddScoped<IRolePermissionServiceApp, RolePermissionServiceApp>();
+
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserServiceApp, UserServiceApp>();
+
+builder.Services.AddScoped<IRoleUserRepository, RoleUserRepository>();
+builder.Services.AddScoped<IRoleUserServiceApp, RoleUserServiceApp>();
+
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
 builder.Services.AddControllers();

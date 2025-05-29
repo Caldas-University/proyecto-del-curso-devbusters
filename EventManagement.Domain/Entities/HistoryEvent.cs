@@ -6,8 +6,8 @@ public class HistoryEvent
     public Guid idEvent { get; set; }
     public string description { get; set; }
     public DateTime date { get; set; }
-   
-   public HistoryEvent(Guid idEvent, string description, DateTime date)
+
+    public HistoryEvent(Guid idEvent, string description, DateTime date)
     {
         this.idEvent = idEvent;
         this.description = description;

@@ -3,6 +3,7 @@ using System;
 using EventManagement.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EventManagement.Infrastructure.Migrations
 {
     [DbContext(typeof(EventManagementDbContext))]
-    partial class EventManagementDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250526004846_UseCaseFour")]
+    partial class UseCaseFour
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.16");
@@ -52,7 +55,7 @@ namespace EventManagement.Infrastructure.Migrations
 
                     b.HasIndex("Eventid");
 
-                    b.ToTable("Activities");
+                    b.ToTable("Activity");
                 });
 
             modelBuilder.Entity("EventManagement.Domain.Entities.Event", b =>
@@ -90,41 +93,6 @@ namespace EventManagement.Infrastructure.Migrations
                     b.HasKey("id");
 
                     b.ToTable("Events");
-                });
-
-            modelBuilder.Entity("EventManagement.Domain.Entities.EventReport", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ActivityType")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("AttendanceCount")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("EventId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<double>("OccupancyRate")
-                        .HasColumnType("REAL");
-
-                    b.Property<int>("RegisteredCount")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("ResourceUsage")
-                        .HasColumnType("TEXT");
-
-                    b.Property<double>("ScheduleCompliance")
-                        .HasColumnType("REAL");
-
-                    b.Property<DateTime>("Timestamp")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("EventReports");
                 });
 
             modelBuilder.Entity("EventManagement.Domain.Entities.Permission", b =>
@@ -167,61 +135,6 @@ namespace EventManagement.Infrastructure.Migrations
                     b.HasIndex("Eventid");
 
                     b.ToTable("Report");
-                });
-
-            modelBuilder.Entity("EventManagement.Domain.Entities.Resource", b =>
-                {
-                    b.Property<Guid>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("description")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("isAvailable")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("name")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("stock")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("type")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("id");
-
-                    b.ToTable("Resources");
-                });
-
-            modelBuilder.Entity("EventManagement.Domain.Entities.ResourceAssignment", b =>
-                {
-                    b.Property<Guid>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("assignedFrom")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("assignedTo")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("idActivity")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("idResource")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("quantity")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("id");
-
-                    b.ToTable("ResourceAssignments");
                 });
 
             modelBuilder.Entity("EventManagement.Domain.Entities.Role", b =>

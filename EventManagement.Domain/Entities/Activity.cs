@@ -3,11 +3,11 @@ namespace EventManagement.Domain.Entities;
 public class Activity
 {
     public Guid id { get; private set; }
-    public string name { get; private set; }    
+    public string name { get; private set; }
     public string type { get; private set; }
     public DateTime date { get; private set; }
     public float duration { get; private set; }
-    public string description { get; private set; } 
+    public string description { get; private set; }
 
     public string location { get; private set; }
 
