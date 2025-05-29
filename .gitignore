@@ -7,3 +7,5 @@ obj/
 *.db-shm
 *.db-wal
 .fake
+
+.vs
