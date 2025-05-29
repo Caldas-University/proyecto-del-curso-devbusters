@@ -6,14 +6,19 @@ public class RolePermission
     public Guid idRole { get; private set; }
     public Guid idPermission { get; private set; }
 
+    public RolePermission()
+    {
+        id = Guid.NewGuid();
+    }
+
     public RolePermission(Guid id, Guid idRole, Guid idPermission)
     {
-        this.id = id;
+        this.id = Guid.NewGuid();
         this.idRole = idRole;
         this.idPermission = idPermission;
     }
 
-    public void ChangePermission (Guid newPermissionId)
+    public void ChangePermission(Guid newPermissionId)
     {
         if (newPermissionId == Guid.Empty)
         {

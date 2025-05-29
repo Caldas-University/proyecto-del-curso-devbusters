@@ -1,10 +1,12 @@
+namespace EventManagement.Api.Controllers;
+
 using EventManagement.Application.Contracts.Services;
 using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using EventManagement.Application.DTO;
 using EventManagement.Domain.Entities;
 
-namespace EventManagement.Api.Controllers;
+
 [ApiController]
 [Route("api/[controller]")]
 public class RoleController : ControllerBase
@@ -29,7 +31,7 @@ public class RoleController : ControllerBase
         var roleEntity = _mapper.Map<Role>(roleDTO);
         var createdRole = await _RoleService.RoleAsync(roleEntity);
 
-        if (createdRole == null)
+        if (createdRole == Guid.Empty)
         {
             return BadRequest("Failed to create role");
         }

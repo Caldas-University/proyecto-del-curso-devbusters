@@ -1,10 +1,11 @@
+namespace EventManagement.Api.Controllers;
+
 using EventManagement.Application.Contracts.Services;
 using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using EventManagement.Application.DTO;
 using EventManagement.Domain.Entities;
 
-namespace EventManagement.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
