@@ -1,10 +1,10 @@
-namespace EventManagement.Domain.Repositories;
+namespace EventManagement.Application.Contracts.Services;
 
 using EventManagement.Domain.Entities;
 
-public interface IRoleUserRepository
+public interface IRoleUserServiceApp
 {
     Task<Guid> AssignRoleUserAsync(RoleUser roleUser);
-    Task<RoleUser> GetRoleUserById(Guid id);
+    Task<RoleUser> GetRoleUserByIdAsync(Guid id);
     Task<IEnumerable<RoleUser>> GetAllRoleUsersAsync();
 }

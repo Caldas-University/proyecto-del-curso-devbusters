@@ -26,6 +26,9 @@ builder.Services.AddScoped<IRolePermissionServiceApp, RolePermissionServiceApp>(
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserServiceApp, UserServiceApp>();
 
+builder.Services.AddScoped<IRoleUserRepository, RoleUserRepository>();
+builder.Services.AddScoped<IRoleUserServiceApp, RoleUserServiceApp>();
+
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
 builder.Services.AddControllers();

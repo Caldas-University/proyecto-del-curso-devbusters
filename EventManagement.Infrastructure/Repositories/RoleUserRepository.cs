@@ -21,7 +21,7 @@ public class RoleUserRepository : IRoleUserRepository
         return roleUser.id;
     }
 
-    public async Task<RoleUser> GetRoleUserByIdAsync(Guid id)
+    public async Task<RoleUser> GetRoleUserById(Guid id)
     {
         return await _context.RoleUsers.FindAsync(id);
     }

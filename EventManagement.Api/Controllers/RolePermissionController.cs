@@ -68,13 +68,19 @@ public class RolePermissionController : ControllerBase
             return BadRequest("Invalid role permission ID");
         }
 
-        RolePermission rolePermissionEntity = await _rolePermissionService.GetRolePermissionByIdAsync(id);
-        if (rolePermissionEntity == null)
+        try
+        {
+            var rolePermissionEntity = await _rolePermissionService.GetRolePermissionByIdAsync(id);
+            var responseRolePermissionDTO = _mapper.Map<RolePermissionResponseDTO>(rolePermissionEntity);
+            return Ok(responseRolePermissionDTO);
+        }
+        catch (KeyNotFoundException)
         {
             return NotFound($"Role permission with ID {id} not found");
         }
-
-        var rolePermissionDTO = _mapper.Map<RolePermissionResponseDTO>(rolePermissionEntity);
-        return Ok(rolePermissionDTO);
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"An error occurred while retrieving the role permission: {ex.Message}");
+        }
     }
 }
