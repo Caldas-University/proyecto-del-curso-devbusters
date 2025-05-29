@@ -55,7 +55,7 @@ public class RolePermissionController : ControllerBase
 
         var responseRolePermissionDTO = _mapper.Map<RolePermissionResponseDTO>(rolePermissionEntity);
         return Ok(responseRolePermissionDTO);
-        
+
 
 
     }
