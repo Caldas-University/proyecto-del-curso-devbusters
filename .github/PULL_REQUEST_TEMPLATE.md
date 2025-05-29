@@ -1,56 +1,115 @@
 ## 📌 Descripción del Cambio
 
 ### 🛠 Problema Resuelto
-- **Issue relacionado**: Closes #123 (vincula el número del issue que resuelve).
-- **Contexto**: 
-  > Ejemplo: "Los usuarios no podían restablecer su contraseña porque el endpoint `/api/reset-password` no validaba correctamente el formato del correo electrónico, lo que generaba errores 500 en el servidor."
+
+* **Issue relacionado**: N/A (implementación inicial del caso de uso CU-GE-02.1).
+* **Contexto**:
+
+  > Se implementó el primer sprint del caso de uso **CU-GE-02: Programar actividades dentro del evento**, permitiendo a los organizadores crear actividades como sesiones, dinámicas o conferencias, asociadas a un evento específico.
+
+---
 
 ### 🚀 Nueva Funcionalidad
-- **Descripción técnica**: 
-  > Ejemplo: "Se ha agregado un servicio de validación de correos electrónicos usando expresiones regulares en el módulo `AuthService`. Además, se implementó un nuevo método `IsValidEmailAsync` que verifica dominios bloqueados en la base de datos."
-- **Impacto en el usuario**: 
-  > Ejemplo: "Los usuarios ahora recibirán un mensaje claro si su correo no es válido o si el dominio está bloqueado (ej: `@spam.com`)."
+
+* **Descripción técnica**:
+
+  > Se agregó soporte para la creación de actividades con validación y persistencia. Incluye capa de presentación (controller), DTOs, servicio de aplicación, entidad de dominio, repositorio e integración con Entity Framework Core.
+  > También se configuró AutoMapper para convertir entre DTOs y entidades.
+
+* **Impacto en el usuario**:
+
+  > Los organizadores ahora pueden registrar actividades en eventos ya existentes desde el endpoint `POST /api/activity`, y recibir una respuesta clara con los datos almacenados.
+
+---
 
 ### 📄 Cambios Realizados
-- **Archivos modificados**:
-  - `src/Controllers/AuthController.cs` (lógica de validación).
-  - `src/Services/AuthService.cs` (nuevo método).
-- **Archivos agregados**:
-  - `tests/UnitTests/AuthServiceTests.cs` (pruebas para el nuevo método).
+
+* **Archivos agregados**:
+
+  * `Application/DTO/CreateRequestActivityDTO.cs`
+  * `Application/DTO/CreateResponseActivityDTO.cs`
+  * `Application/Contracts/Services/IActivityServiceApp.cs`
+  * `Application/Services/ActivityServiceApp.cs`
+  * `Application/Mappers/ActivityProfile.cs`
+  * `Domain/Repositories/IActivityRepository.cs`
+  * `Infrastructure/Repositories/ActivityRepository.cs`
+  * `Api/Controllers/ActivityController.cs`
+
+* **Archivos modificados**:
+
+  * `Infrastructure/Persistence/EventManagementDbContext.cs` (agregado `DbSet<Activity>`)
+  * `Program.cs` (registro de `IActivityServiceApp` y `IActivityRepository`)
+  * `Infrastructure/Migrations/` (se generó y aplicó la migración `AddActivityTable`)
 
 ---
 
 ## ✅ Checklist
 
 Antes de solicitar revisión, verifica lo siguiente:
-- [ ] **Pruebas locales**: Ejecuté `dotnet test` y todos los tests pasan (incluyendo los nuevos).
-- [ ] **Documentación**: Actualicé el archivo `docs/AUTH_API.md` con los nuevos parámetros del endpoint.
-- [ ] **Código limpio**: Seguí las guías de estilo (ej: nombres de variables en `PascalCase`).
-- [ ] **Revisión de pares**: Asigné a `@usuario-dev` como revisor principal.
-- [ ] **Dependencias**: No introduje nuevas dependencias sin aprobación del equipo.
-- [ ] **Linting**: Ejecuté `dotnet format` para asegurar el formato consistente.
-- [ ] **Migrations**: Si hay cambios en la base de datos, adjunté el script SQL de migración.
+
+* [x] **Pruebas locales**: Ejecuté el proyecto y validé la creación y consulta de actividades.
+* [x] **Migraciones**: Se generó y aplicó la migración `AddActivityTable` con EF Core.
+* [x] **AutoMapper**: Se configuró correctamente el perfil `ActivityProfile`.
+* [x] **Dependencias**: No se agregaron nuevas dependencias externas.
 
 ---
 
 ## 🖼 Capturas de Pantalla / GIFs (si aplica)
 
-### Caso 1: Error de correo inválido
-**Antes**:  
-![Error genérico](https://ejemplo.com/error-antiguo.png)  
-**Después**:  
-![Mensaje claro](https://ejemplo.com/error-nuevo.png)
+### Caso: Creación de actividad exitosa
 
-### Caso 2: Flujo de restablecimiento exitoso
-![GIF del flujo](https://ejemplo.com/flujo-exitoso.gif)
+**Solicitud POST**:
+
+```json
+{
+  "name": "Taller de Diseño",
+  "type": "Dinámica",
+  "date": "2025-08-01T10:00:00",
+  "duration": 60,
+  "description": "Exploración creativa de ideas",
+  "location": "Sala A",
+  "eventId": "REEMPLAZAR_CON_ID_REAL"
+}
+```
+
+**Respuesta esperada**:
+
+```json
+{
+  "id": "generated-guid",
+  "name": "Taller de Diseño",
+  "type": "Dinámica",
+  "date": "2025-08-01T10:00:00",
+  "duration": 60,
+  "description": "Exploración creativa de ideas",
+  "location": "Sala A"
+}
+```
 
 ---
 
 ## 🔍 Pasos para probar los cambios
-1. Clona la rama: `git checkout feature/email-validation`.
-2. Ejecuta el servidor: `dotnet run --project src/Api`.
-3. Usa Postman para enviar una solicitud POST a `http://localhost:5000/api/reset-password` con:
-   ```json
-   {
-     "email": "usuario@spam.com"
-   }
+
+1. Clona esta rama:
+
+   ```bash
+   git checkout feature/create-activity
+   ```
+
+2. Ejecuta migraciones:
+
+   ```bash
+   dotnet ef database update --project EventManagement.Infrastructure --startup-project EventManagement.Api
+   ```
+
+3. Levanta el servidor:
+
+   ```bash
+   dotnet run --project EventManagement.Api
+   ```
+
+4. Abre Swagger en `https://localhost:5001/swagger`.
+
+5. Usa el endpoint `POST /api/event` para crear un evento, copia su `id`.
+
+6. Usa `POST /api/activity` para crear una actividad asociada.

@@ -1,12 +1,7 @@
 */bin
 */obj
-*.db-shm
-*.db-wal
-# Archivos de compilación
-bin/
-obj/
+*/*.db
 
-# Base de datos
-*.db
 *.db-shm
 *.db-wal
+/estructura.txt
