@@ -1,11 +1,10 @@
-# Archivos de compilación
-bin/
-obj/
+*/bin
+*/obj
+*/*.db
 
-# Base de datos
-*.db
 *.db-shm
 *.db-wal
+/estructura.txt
 .fake
 
 .vs

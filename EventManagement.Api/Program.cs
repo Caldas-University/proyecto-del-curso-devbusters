@@ -7,12 +7,20 @@ using EventManagement.Application.Contracts.Services;
 using AutoMapper;
 
 var builder = WebApplication.CreateBuilder(args);
-
+QuestPDF.Settings.License = QuestPDF.Infrastructure.LicenseType.Community;
 builder.Services.AddDbContext<EventManagementDbContext>(options =>
     options.UseSqlite("Data Source=EventManagement.db"));
 
 builder.Services.AddScoped<IEventRepository, EventRepository>();
 builder.Services.AddScoped<IEventServiceApp, EventServiceApp>();
+builder.Services.AddScoped<IActivityRepository, ActivityRepository>();
+builder.Services.AddScoped<IActivityServiceApp, ActivityServiceApp>();
+builder.Services.AddScoped<IResourceRepository, ResourceRepository>();
+builder.Services.AddScoped<IResourceServiceApp, ResourceServiceApp>();
+builder.Services.AddScoped<IResourceAssignmentRepository, ResourceAssignmentRepository>();
+builder.Services.AddScoped<IResourceAssignmentServiceApp, ResourceAssignmentServiceApp>();
+
+
 
 builder.Services.AddScoped<IPermissionRepository, PermissionRepository>();
 builder.Services.AddScoped<IPermissionServiceApp, PermissionServiceApp>();
