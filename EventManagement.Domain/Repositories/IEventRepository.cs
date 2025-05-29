@@ -6,4 +6,5 @@ public interface IEventRepository
 {
     Task<Guid> AddEventAsync(Event eventEntity);
     Task<Event> GetEventByIdAsync(Guid id);
+    Task<bool> ExistsConflictingEventAsync(DateTime startDate, DateTime endDate);
 }

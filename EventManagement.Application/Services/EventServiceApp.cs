@@ -20,6 +20,13 @@ public class EventServiceApp : IEventServiceApp
             throw new ArgumentNullException(nameof(eventEntity));
         }
 
+        // Validar solapamiento de fechas
+        bool conflict = await _eventRepository.ExistsConflictingEventAsync(eventEntity.startDate, eventEntity.endDate);
+        if (conflict)
+        {
+            throw new InvalidOperationException("Las fechas del evento se solapan con otro evento existente.");
+        }
+
         var createdEventId = await _eventRepository.AddEventAsync(eventEntity);
         return createdEventId;
     }

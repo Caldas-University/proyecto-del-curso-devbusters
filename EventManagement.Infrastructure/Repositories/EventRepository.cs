@@ -27,4 +27,13 @@ public class EventRepository : IEventRepository
             .FirstOrDefaultAsync(e => e.id == id);
     }
 
+    public async Task<bool> ExistsConflictingEventAsync(DateTime startDate, DateTime endDate)
+    {
+        return await _context.Events.AnyAsync(e =>
+            (e.startDate >= startDate && e.startDate <= endDate) ||
+            (e.endDate >= startDate && e.endDate <= endDate) ||
+            (startDate >= e.startDate && endDate <= e.endDate)
+        );
+    }
+
 }

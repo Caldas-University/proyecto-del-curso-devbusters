@@ -20,24 +20,35 @@ public class EventController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult AddEvent(CreateRequestEventDTO eventDTO)
+    public async Task<IActionResult> AddEvent([FromBody] CreateRequestEventDTO eventDTO)
     {
         if (eventDTO == null)
-        {
             return BadRequest("Event data is null");
-        }
 
         var eventEntity = _mapper.Map<Event>(eventDTO);
-        var createdEvent = _EventService.EventAsync(eventEntity);
 
-        if (createdEvent == null)
+        try
         {
-            return BadRequest("Failed to create event");
-        }
+            // Llamada asíncrona al servicio que crea el evento validando fechas
+            var createdEventId = await _EventService.EventAsync(eventEntity);
 
-        var responseEventDTO = _mapper.Map<CreateResponseEventDTO>(eventEntity);
-        return Ok(responseEventDTO);
-    }
+            // Opcional: puedes cargar el evento completo si necesitas devolver más datos
+            // var createdEvent = await _EventService.GetByIdAsync(createdEventId);
+
+            var responseEventDTO = _mapper.Map<CreateResponseEventDTO>(eventEntity);
+            return Ok(responseEventDTO);
+        }
+        catch (InvalidOperationException ex)
+        {
+            // Captura la excepción lanzada cuando hay solapamiento de fechas
+            return Conflict(new { message = ex.Message });
+        }
+        catch (Exception)
+        {
+            // Para otros errores inesperados
+            return StatusCode(500, "Internal server error");
+        }
+    }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetEventByIdAsync(Guid id)
