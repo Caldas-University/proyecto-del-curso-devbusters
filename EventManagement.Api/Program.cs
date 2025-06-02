@@ -13,7 +13,33 @@ builder.Services.AddDbContext<EventManagementDbContext>(options =>
 
 builder.Services.AddScoped<IEventRepository, EventRepository>();
 builder.Services.AddScoped<IEventServiceApp, EventServiceApp>();
+
 builder.Services.AddScoped<IEventReportService, EventReportRepository>();
+
+builder.Services.AddScoped<IActivityRepository, ActivityRepository>();
+builder.Services.AddScoped<IActivityServiceApp, ActivityServiceApp>();
+
+builder.Services.AddScoped<IResourceRepository, ResourceRepository>();
+builder.Services.AddScoped<IResourceServiceApp, ResourceServiceApp>();
+
+builder.Services.AddScoped<IResourceAssignmentRepository, ResourceAssignmentRepository>();
+builder.Services.AddScoped<IResourceAssignmentServiceApp, ResourceAssignmentServiceApp>();
+
+builder.Services.AddScoped<IPermissionRepository, PermissionRepository>();
+builder.Services.AddScoped<IPermissionServiceApp, PermissionServiceApp>();
+
+builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+builder.Services.AddScoped<IRoleServiceApp, RoleServiceApp>();
+
+builder.Services.AddScoped<IRolePermissionRepository, RolePermissionRepository>();
+builder.Services.AddScoped<IRolePermissionServiceApp, RolePermissionServiceApp>();
+
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserServiceApp, UserServiceApp>();
+
+builder.Services.AddScoped<IRoleUserRepository, RoleUserRepository>();
+builder.Services.AddScoped<IRoleUserServiceApp, RoleUserServiceApp>();
+
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
 builder.Services.AddControllers();

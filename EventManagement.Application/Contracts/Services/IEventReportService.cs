@@ -6,6 +6,6 @@ namespace EventManagement.Application.Contracts.Services;
 public interface IEventReportService
 {
     Task AddReportAsync(EventReport report);
-    Task<IEnumerable<EventReport>> GetReportsAsync(string? eventId, string? activityType, DateTime? startDate, DateTime? endDate);
-    Task<ReportSummaryDto> GetReportSummaryAsync(string? eventId, string? activityType, DateTime? startDate, DateTime? endDate);
+    Task<IEnumerable<EventReport>> GetReportsAsync(Guid? Id, string? activityType, DateTime? startDate, DateTime? endDate);
+    Task<ReportSummaryDto> GetReportSummaryAsync(Guid? Id, string? activityType, DateTime? startDate, DateTime? endDate);
 }

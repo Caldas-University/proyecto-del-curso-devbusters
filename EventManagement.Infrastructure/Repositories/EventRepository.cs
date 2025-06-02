@@ -2,8 +2,8 @@ namespace EventManagement.Infrastructure.Repositories;
 
 using EventManagement.Domain.Entities;
 using EventManagement.Domain.Repositories;
-using Microsoft.EntityFrameworkCore;
 using EventManagement.Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 public class EventRepository : IEventRepository
 {
@@ -21,7 +21,7 @@ public class EventRepository : IEventRepository
         return events.id;
     }
 
-    public async Task<Event> GetEventByIdAsync(Guid id)
+    public async Task<Event?> GetEventByIdAsync(Guid id)
     {
         return await _context.Events
             .FirstOrDefaultAsync(e => e.id == id);

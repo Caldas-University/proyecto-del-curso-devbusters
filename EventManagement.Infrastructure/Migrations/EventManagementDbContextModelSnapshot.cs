@@ -52,7 +52,7 @@ namespace EventManagement.Infrastructure.Migrations
 
                     b.HasIndex("Eventid");
 
-                    b.ToTable("Activity");
+                    b.ToTable("Activities");
                 });
 
             modelBuilder.Entity("EventManagement.Domain.Entities.Event", b =>
@@ -127,6 +127,25 @@ namespace EventManagement.Infrastructure.Migrations
                     b.ToTable("EventReports");
                 });
 
+            modelBuilder.Entity("EventManagement.Domain.Entities.Permission", b =>
+                {
+                    b.Property<Guid>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("description")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("id");
+
+                    b.ToTable("Permissions");
+                });
+
             modelBuilder.Entity("EventManagement.Domain.Entities.Report", b =>
                 {
                     b.Property<Guid>("id")
@@ -148,6 +167,134 @@ namespace EventManagement.Infrastructure.Migrations
                     b.HasIndex("Eventid");
 
                     b.ToTable("Report");
+                });
+
+            modelBuilder.Entity("EventManagement.Domain.Entities.Resource", b =>
+                {
+                    b.Property<Guid>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("description")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("isAvailable")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("stock")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("type")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("id");
+
+                    b.ToTable("Resources");
+                });
+
+            modelBuilder.Entity("EventManagement.Domain.Entities.ResourceAssignment", b =>
+                {
+                    b.Property<Guid>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("assignedFrom")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("assignedTo")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("idActivity")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("idResource")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("quantity")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("id");
+
+                    b.ToTable("ResourceAssignments");
+                });
+
+            modelBuilder.Entity("EventManagement.Domain.Entities.Role", b =>
+                {
+                    b.Property<Guid>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("id");
+
+                    b.ToTable("Roles");
+                });
+
+            modelBuilder.Entity("EventManagement.Domain.Entities.RolePermission", b =>
+                {
+                    b.Property<Guid>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("idPermission")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("idRole")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("id");
+
+                    b.ToTable("RolePermissions");
+                });
+
+            modelBuilder.Entity("EventManagement.Domain.Entities.RoleUser", b =>
+                {
+                    b.Property<Guid>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("idRole")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("idUser")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("id");
+
+                    b.ToTable("RoleUsers");
+                });
+
+            modelBuilder.Entity("EventManagement.Domain.Entities.RoleUserHistory", b =>
+                {
+                    b.Property<Guid>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("changeDescription")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("dateChange")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("userId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("userRoleId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("id");
+
+                    b.ToTable("RoleUserHistories");
                 });
 
             modelBuilder.Entity("EventManagement.Domain.Entities.User", b =>
@@ -179,7 +326,7 @@ namespace EventManagement.Infrastructure.Migrations
 
                     b.HasIndex("Eventid");
 
-                    b.ToTable("User");
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("EventManagement.Domain.Entities.Activity", b =>

@@ -63,7 +63,7 @@ public class EventReportPdfGenerator
                         // Filas tabla
                         foreach (var r in reports)
                         {
-                            table.Cell().Element(CellStyle).Text(r.EventId);
+                            table.Cell().Element(CellStyle).Text(r.Id.ToString());
                             table.Cell().Element(CellStyle).Text(r.ActivityType);
                             table.Cell().Element(CellStyle).Text(r.AttendanceCount.ToString());
                             table.Cell().Element(CellStyle).Text($"{r.ScheduleCompliance:P0}");
