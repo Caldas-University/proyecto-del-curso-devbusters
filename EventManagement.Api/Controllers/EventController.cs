@@ -47,8 +47,8 @@ public class EventController : ControllerBase
         {
             // Para otros errores inesperados
             return StatusCode(500, "Internal server error");
-        }
-    }
+        }
+    }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetEventByIdAsync(Guid id)
@@ -67,4 +67,42 @@ public class EventController : ControllerBase
         var eventDTO = _mapper.Map<CreateResponseEventDTO>(eventEntity);
         return Ok(eventDTO);
     }
+    
+    [HttpPut("{id:guid}")]
+        public async Task<IActionResult> UpdateEvent(Guid id, [FromBody] ModifyRequestEventDTO dto)
+        {
+            if (dto == null)
+                return BadRequest("Event data is null");
+
+            // Mapear DTO -> Entidad (no incluimos Id en el DTO, lo forzamos desde la ruta)
+            var toUpdate = _mapper.Map<Event>(dto);
+            toUpdate.id = id;
+
+            try
+            {
+                var updatedEntity = await _EventService.UpdateEventAsync(id, toUpdate);
+
+                var responseDto = _mapper.Map<CreateResponseEventDTO>(updatedEntity);
+                return Ok(responseDto);
+            }
+            catch (ArgumentException argEx) when (argEx.ParamName == "id")
+            {
+                // Id vacío o inválido
+                return BadRequest(argEx.Message);
+            }
+            catch (KeyNotFoundException)
+            {
+                // No existe ese Id en BD
+                return NotFound($"El evento con id {id} no existe.");
+            }
+            catch (InvalidOperationException ex)
+            {
+                // Fechas en conflicto al actualizar
+                return Conflict(new { message = ex.Message });
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal server error");
+            }
+        }
 }

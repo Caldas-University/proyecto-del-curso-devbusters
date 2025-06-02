@@ -10,5 +10,6 @@ public class EventProfile : Profile
     {
         CreateMap<CreateRequestEventDTO, Event>();
         CreateMap<Event, CreateResponseEventDTO>();
+        CreateMap<ModifyRequestEventDTO, Event>();
     }
 }
