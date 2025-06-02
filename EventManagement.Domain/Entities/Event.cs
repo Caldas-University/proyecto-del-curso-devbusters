@@ -3,13 +3,13 @@ namespace EventManagement.Domain.Entities;
 public class Event
 {
     public Guid id { get; set; }
-    public string name { get; private set; }
-    public string description { get; private set; }
-    public DateTime startDate { get; private set; }
-    public DateTime endDate { get; private set; }
-    public string location { get; private set; }
-    public string type { get; private set; }
-    public string status { get; private set; }
+    public string name { get; set; }
+    public string description { get;  set; }
+    public DateTime startDate { get;  set; }
+    public DateTime endDate { get;  set; }
+    public string location { get;  set; }
+    public string type { get;  set; }
+    public string status { get;  set; }
     public List<Activity> Activities { get; private set; } = new();
     public List<EventReport> Reports { get; private set; } = new();
     public List<User> Users { get; private set; } = new();
