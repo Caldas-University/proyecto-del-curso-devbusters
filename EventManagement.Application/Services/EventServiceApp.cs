@@ -46,4 +46,35 @@ public class EventServiceApp : IEventServiceApp
 
         return eventEntity;
     }
+
+    public async Task<Event> UpdateEventAsync(Guid id, Event updatedEvent)
+        {
+            if (updatedEvent == null)
+                throw new ArgumentNullException(nameof(updatedEvent));
+
+            // 1) Verificar que el evento exista (GetEventByIdAsync lanzará KeyNotFoundException si no encuentra)
+            var existing = await GetEventByIdAsync(id);
+
+            // 2) Verificar solapamiento excluyendo este Id
+            bool conflictOnUpdate = await _eventRepository.ExistsConflictingEventAsync(
+                updatedEvent.startDate,
+                updatedEvent.endDate,
+                excludeEventId: id
+            );
+
+            if (conflictOnUpdate)
+                throw new InvalidOperationException("Las nuevas fechas se solapan con otro evento existente.");
+
+            // 3) Asignar campos modificables en la entidad que obtuve de BD
+            existing.name        = updatedEvent.name;
+            existing.description = updatedEvent.description;
+            existing.startDate   = updatedEvent.startDate;
+            existing.endDate     = updatedEvent.endDate;
+            existing.location    = updatedEvent.location;
+            existing.type        = updatedEvent.type;
+            existing.status      = updatedEvent.status;
+
+        var modified = await _eventRepository.ModifyEventAsync(existing);
+            return modified;
+        }
 }
