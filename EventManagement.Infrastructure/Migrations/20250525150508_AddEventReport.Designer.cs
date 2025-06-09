@@ -3,6 +3,7 @@ using System;
 using EventManagement.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EventManagement.Infrastructure.Migrations
 {
     [DbContext(typeof(EventManagementDbContext))]
-    partial class EventManagementDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250525150508_AddEventReport")]
+    partial class AddEventReport
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.16");
@@ -21,6 +24,9 @@ namespace EventManagement.Infrastructure.Migrations
                 {
                     b.Property<Guid>("id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid?>("Eventid")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("date")
@@ -32,9 +38,6 @@ namespace EventManagement.Infrastructure.Migrations
 
                     b.Property<float>("duration")
                         .HasColumnType("REAL");
-
-                    b.Property<Guid>("eventId")
-                        .HasColumnType("TEXT");
 
                     b.Property<string>("location")
                         .IsRequired()
@@ -50,9 +53,9 @@ namespace EventManagement.Infrastructure.Migrations
 
                     b.HasKey("id");
 
-                    b.HasIndex("eventId");
+                    b.HasIndex("Eventid");
 
-                    b.ToTable("Activities");
+                    b.ToTable("Activity");
                 });
 
             modelBuilder.Entity("EventManagement.Domain.Entities.Event", b =>
@@ -150,61 +153,6 @@ namespace EventManagement.Infrastructure.Migrations
                     b.ToTable("Report");
                 });
 
-            modelBuilder.Entity("EventManagement.Domain.Entities.Resource", b =>
-                {
-                    b.Property<Guid>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("description")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("isAvailable")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("name")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("stock")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("type")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("id");
-
-                    b.ToTable("Resources");
-                });
-
-            modelBuilder.Entity("EventManagement.Domain.Entities.ResourceAssignment", b =>
-                {
-                    b.Property<Guid>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("assignedFrom")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("assignedTo")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("idActivity")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("idResource")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("quantity")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("id");
-
-                    b.ToTable("ResourceAssignments");
-                });
-
             modelBuilder.Entity("EventManagement.Domain.Entities.User", b =>
                 {
                     b.Property<Guid>("id")
@@ -241,9 +189,7 @@ namespace EventManagement.Infrastructure.Migrations
                 {
                     b.HasOne("EventManagement.Domain.Entities.Event", null)
                         .WithMany("Activities")
-                        .HasForeignKey("eventId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("Eventid");
                 });
 
             modelBuilder.Entity("EventManagement.Domain.Entities.Report", b =>
