@@ -28,10 +28,36 @@ public class ActivityRepository : IActivityRepository
     }
 
     public async Task<IEnumerable<Activity>> GetByLocationAndDateAsync(string location, DateTime date)
-{
-    return await _context.Activities
-        .Where(a => a.location == location && a.date.Date == date.Date)
-        .ToListAsync();
-}
+    {
+        return await _context.Activities
+            .Where(a => a.location == location && a.date.Date == date.Date)
+            .ToListAsync();
+    }
+
+
+    public async Task<IEnumerable<Activity>> GetByEventIdAsync(Guid eventId)
+    {
+        return await _context.Activities
+            .Where(a => a.eventId == eventId)
+            .ToListAsync();
+    }
+
+    public async Task UpdateAsync(Activity activity)
+    {
+        var existing = await _context.Activities.FindAsync(activity.id);
+        if (existing == null)
+        {
+            throw new KeyNotFoundException($"Actividad con ID {activity.id} no encontrada.");
+        }
+
+        // Como las propiedades son privadas, Entity Framework no puede rastrear los cambios directamente.
+        // Así que eliminamos y volvemos a agregar la entidad actualizada.
+
+        _context.Entry(existing).State = EntityState.Detached;
+        _context.Activities.Update(activity);
+
+        await _context.SaveChangesAsync();
+    }
+
 
 }

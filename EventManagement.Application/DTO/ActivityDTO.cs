@@ -21,3 +21,14 @@ public class CreateResponseActivityDTO
     public string description { get; set; } = null!;
     public string location { get; set; } = null!;
 }
+
+
+public class UpdateRequestActivityDTO
+{
+    public string name { get; set; } = null!;
+    public string type { get; set; } = null!;
+    public DateTime date { get; set; }
+    public float duration { get; set; }
+    public string description { get; set; } = null!;
+    public string location { get; set; } = null!;
+}

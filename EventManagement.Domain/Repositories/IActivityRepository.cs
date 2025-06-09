@@ -8,4 +8,8 @@ public interface IActivityRepository
     Task<Activity?> GetByIdAsync(Guid id);
     Task<IEnumerable<Activity>> GetByLocationAndDateAsync(string location, DateTime date);
 
+    Task<IEnumerable<Activity>> GetByEventIdAsync(Guid eventId);
+
+    Task UpdateAsync(Activity activity);
+
 }
