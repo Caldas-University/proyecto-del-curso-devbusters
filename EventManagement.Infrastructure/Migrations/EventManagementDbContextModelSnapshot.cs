@@ -23,9 +23,6 @@ namespace EventManagement.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid?>("Eventid")
-                        .HasColumnType("TEXT");
-
                     b.Property<DateTime>("date")
                         .HasColumnType("TEXT");
 
@@ -35,6 +32,9 @@ namespace EventManagement.Infrastructure.Migrations
 
                     b.Property<float>("duration")
                         .HasColumnType("REAL");
+
+                    b.Property<Guid>("eventId")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("location")
                         .IsRequired()
@@ -50,7 +50,7 @@ namespace EventManagement.Infrastructure.Migrations
 
                     b.HasKey("id");
 
-                    b.HasIndex("Eventid");
+                    b.HasIndex("eventId");
 
                     b.ToTable("Activities");
                 });
@@ -333,7 +333,9 @@ namespace EventManagement.Infrastructure.Migrations
                 {
                     b.HasOne("EventManagement.Domain.Entities.Event", null)
                         .WithMany("Activities")
-                        .HasForeignKey("Eventid");
+                        .HasForeignKey("eventId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("EventManagement.Domain.Entities.Report", b =>

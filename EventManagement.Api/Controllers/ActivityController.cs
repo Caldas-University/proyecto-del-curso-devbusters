@@ -27,17 +27,25 @@ public class ActivityController : ControllerBase
             return BadRequest("Activity data is null");
         }
 
-        var activityEntity = _mapper.Map<Activity>(activityDTO);
-        var createdActivityId = await _activityService.CreateAsync(activityEntity);
-
-        if (createdActivityId == Guid.Empty)
+        try
         {
-            return BadRequest("Failed to create activity");
-        }
+            var activityEntity = _mapper.Map<Activity>(activityDTO);
+            var createdActivityId = await _activityService.CreateAsync(activityEntity);
 
-        var responseDTO = _mapper.Map<CreateResponseActivityDTO>(activityEntity);
-        return Ok(responseDTO);
+            var responseDTO = _mapper.Map<CreateResponseActivityDTO>(activityEntity);
+            return Ok(responseDTO);
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(new { message = ex.Message }); // 👈 muestra el mensaje de solapamiento
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { message = "Ocurrió un error interno", detail = ex.Message });
+        }
     }
+
+
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetActivityByIdAsync(Guid id)
@@ -56,4 +64,45 @@ public class ActivityController : ControllerBase
         var responseDTO = _mapper.Map<CreateResponseActivityDTO>(activity);
         return Ok(responseDTO);
     }
+
+    [HttpGet("event/{eventId}")]
+    public async Task<IActionResult> GetByEventId(Guid eventId)
+    {
+        if (eventId == Guid.Empty)
+            return BadRequest("ID de evento inválido");
+
+        var activities = await _activityService.GetByEventIdAsync(eventId);
+
+        var response = activities.Select(_mapper.Map<CreateResponseActivityDTO>);
+        return Ok(response);
+    }
+
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateActivity(Guid id, [FromBody] UpdateRequestActivityDTO dto)
+    {
+        if (dto == null)
+        {
+            return BadRequest("Los datos de la actividad son requeridos.");
+        }
+
+        try
+        {
+            await _activityService.UpdateAsync(id, dto);
+            return NoContent(); // 204: Actualización exitosa, sin contenido
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(new { message = ex.Message });
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(new { message = ex.Message }); // Por solapamiento
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { message = "Error inesperado", detail = ex.Message });
+        }
+    }
+
 }
