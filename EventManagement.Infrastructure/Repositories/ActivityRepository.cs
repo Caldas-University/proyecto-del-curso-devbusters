@@ -26,4 +26,12 @@ public class ActivityRepository : IActivityRepository
         return await _context.Activities
             .FirstOrDefaultAsync(a => a.id == id);
     }
+
+    public async Task<IEnumerable<Activity>> GetByLocationAndDateAsync(string location, DateTime date)
+{
+    return await _context.Activities
+        .Where(a => a.location == location && a.date.Date == date.Date)
+        .ToListAsync();
+}
+
 }

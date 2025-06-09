@@ -27,17 +27,25 @@ public class ActivityController : ControllerBase
             return BadRequest("Activity data is null");
         }
 
-        var activityEntity = _mapper.Map<Activity>(activityDTO);
-        var createdActivityId = await _activityService.CreateAsync(activityEntity);
-
-        if (createdActivityId == Guid.Empty)
+        try
         {
-            return BadRequest("Failed to create activity");
-        }
+            var activityEntity = _mapper.Map<Activity>(activityDTO);
+            var createdActivityId = await _activityService.CreateAsync(activityEntity);
 
-        var responseDTO = _mapper.Map<CreateResponseActivityDTO>(activityEntity);
-        return Ok(responseDTO);
+            var responseDTO = _mapper.Map<CreateResponseActivityDTO>(activityEntity);
+            return Ok(responseDTO);
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(new { message = ex.Message }); // 👈 muestra el mensaje de solapamiento
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { message = "Ocurrió un error interno", detail = ex.Message });
+        }
     }
+
+
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetActivityByIdAsync(Guid id)

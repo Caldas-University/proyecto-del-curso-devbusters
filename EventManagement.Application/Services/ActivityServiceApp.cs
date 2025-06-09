@@ -20,9 +20,29 @@ public class ActivityServiceApp : IActivityServiceApp
             throw new ArgumentNullException(nameof(activity));
         }
 
+        // ⛔ Validar solapamientos
+        var actividadesEnElLugar = await _activityRepository.GetByLocationAndDateAsync(activity.location, activity.date);
+
+        var horaInicioNueva = activity.date;
+        var horaFinNueva = horaInicioNueva.AddMinutes(activity.duration);
+
+        var conflicto = actividadesEnElLugar.Any(existing =>
+        {
+            var inicioExistente = existing.date;
+            var finExistente = inicioExistente.AddMinutes(existing.duration);
+
+            return horaInicioNueva < finExistente && horaFinNueva > inicioExistente;
+        });
+
+        if (conflicto)
+        {
+            throw new InvalidOperationException("Ya existe una actividad en ese lugar que se solapa con el horario indicado.");
+        }
+
         var createdActivityId = await _activityRepository.AddAsync(activity);
         return createdActivityId;
     }
+
 
     public async Task<Activity?> GetByIdAsync(Guid id)
     {
